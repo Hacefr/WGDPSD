@@ -1,46 +1,24 @@
-// --- DATA: Update your levels here ---
-const allLevels = [
-    { 
-        pos: 1, 
-        name: "Tidal Wave", 
-        tag: "Unverified", 
-        creator: "OniLink", 
-        video: "https://youtube.com", 
-        records: ["PlayerOne"] 
-    },
-    { 
-        pos: 2, 
-        name: "Acheron", 
-        tag: "", 
-        creator: "Riot", 
-        video: "https://youtube.com", 
-        records: ["PlayerTwo"] 
-    },
-    { 
-        pos: 11, 
-        name: "Cataclysm", 
-        tag: "Legacy", 
-        creator: "GGBoy", 
-        video: "https://youtube.com", 
-        records: ["PlayerOne", "PlayerThree"] 
+let allLevels = []; // Starts empty, will be filled by data.json
+
+// Load data from your external JSON file
+async function loadData() {
+    try {
+        const response = await fetch('data.json');
+        allLevels = await response.json();
+        showSection('main'); // Show the list once data is loaded
+    } catch (error) {
+        console.error("Error loading data.json:", error);
+        document.getElementById('content-area').innerHTML = "<h1>Error loading data.json</h1>";
     }
-];
-
-const listTeam = [
-    { role: "Owners", names: ["YourName"] },
-    { role: "Editors", names: ["Editor1", "Editor2"] }
-];
-
-// --- LOGIC ---
+}
 
 function getYouTubeID(url) {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
+    return (match && match.length === 11) ? match[2] : null;
 }
 
 function calculatePoints(pos) {
-    // Formula: #1 = 250pts, decreasing by 2.5 per rank
     return Math.max(0, 250 - (pos - 1) * 2.5);
 }
 
@@ -48,65 +26,39 @@ function showSection(section) {
     const content = document.getElementById('content-area');
     content.innerHTML = "";
     
-    // UI: Set active button
     document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
-    document.getElementById(`btn-${section}`).classList.add('active');
+    const activeBtn = document.getElementById(`btn-${section}`);
+    if(activeBtn) activeBtn.classList.add('active');
 
     if (section === 'main' || section === 'extended') {
-        const filtered = allLevels.filter(l => section === 'main' ? l.pos <= 10 : l.pos > 10);
+        // Pointercrate standard: Main is top 10, Extended is 11+
+        const filtered = allLevels.filter(l => section === 'main' ? l.position <= 10 : l.position > 10);
         content.innerHTML = `<h1>${section.toUpperCase()} LIST</h1>`;
         
         filtered.forEach(level => {
             const ytID = getYouTubeID(level.video);
             const thumb = ytID ? `https://youtube.com{ytID}/mqdefault.jpg` : "";
-            
-            // Generate Tag HTML
-            let tagHTML = "";
-            if (level.tag) {
-                const tagClass = level.tag.toLowerCase() === "unverified" ? "tag-unverified" : "tag-legacy";
-                tagHTML = `<span class="tag ${tagClass}">${level.tag}</span>`;
-            }
+            const tagHTML = level.tag ? `<span class="tag">${level.tag}</span>` : "";
 
             content.innerHTML += `
                 <div class="level-card">
                     <div class="thumbnail" style="background-image: url('${thumb}')"></div>
                     <div class="level-info">
-                        <h2>#${level.pos} - ${level.name} ${tagHTML}</h2>
-                        <p>By <span class="accent">${level.creator}</span></p>
-                        <p>Records: ${level.records.join(', ') || "None"}</p>
+                        <h2>#${level.position} - ${level.name} ${tagHTML}</h2>
+                        <p>By <strong style="color:var(--accent-blue)">${level.creator}</strong></p>
+                        <p>Verifier: ${level.verifier || "N/A"}</p>
                         <a href="${level.video}" target="_blank" class="video-link">Watch Verification</a>
                     </div>
                 </div>`;
         });
     } else if (section === 'players') {
         content.innerHTML = "<h1>TOP PLAYERS</h1>";
-        let scores = {};
-        
-        allLevels.forEach(l => {
-            const pts = calculatePoints(l.pos);
-            l.records.forEach(p => scores[p] = (scores[p] || 0) + pts);
-        });
-        
-        const sorted = Object.entries(scores).sort((a, b) => b - a);
-        
-        sorted.forEach((p, i) => {
-            content.innerHTML += `
-                <div class="level-card"><div class="level-info">
-                    <h2>#${i+1} - ${p[0]}</h2>
-                    <p>Total Points: <span class="accent">${p[1].toFixed(2)}</span></p>
-                </div></div>`;
-        });
+        // Logic for players would require a "records" field in your JSON as well
+        content.innerHTML += "<p>Player rankings will appear here based on level completions.</p>";
     } else if (section === 'team') {
-        content.innerHTML = "<h1>LIST TEAM</h1>";
-        listTeam.forEach(t => {
-            content.innerHTML += `
-                <div class="level-card"><div class="level-info">
-                    <h2>${t.role}</h2>
-                    <p>${t.names.join(', ')}</p>
-                </div></div>`;
-        });
+        content.innerHTML = "<h1>LIST TEAM</h1><p>Edit script.js to add team members.</p>";
     }
 }
 
-// Default view
-showSection('main');
+// Kick off the loading process
+loadData();
