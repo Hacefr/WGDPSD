@@ -7,6 +7,7 @@
     --text-main: #ffffff;
     --text-dim: #999;
     --tag-red: #ff4d4d;
+    --gold: #ffd700;
 }
 
 body {
@@ -18,6 +19,7 @@ body {
     min-height: 100vh;
 }
 
+/* Sidebar Layout */
 .sidebar {
     width: 260px;
     background: var(--sidebar-bg);
@@ -33,11 +35,17 @@ body {
 .logo {
     font-size: 1.4rem;
     font-weight: 700;
+    letter-spacing: 2px;
     color: var(--accent-blue);
     margin-bottom: 40px;
     text-align: center;
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 20px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
 }
 
 nav button {
@@ -48,8 +56,14 @@ nav button {
     padding: 12px 15px;
     font-size: 0.95rem;
     cursor: pointer;
+    transition: all 0.2s;
     border-radius: 5px;
     margin-bottom: 5px;
+}
+
+nav button:hover {
+    color: var(--text-main);
+    background: #1a1a1a;
 }
 
 nav button.active {
@@ -58,6 +72,7 @@ nav button.active {
     font-weight: 700;
 }
 
+/* Main Content Area */
 .main-content {
     margin-left: 260px;
     padding: 50px;
@@ -65,6 +80,14 @@ nav button.active {
     max-width: 900px;
 }
 
+h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    border-left: 5px solid var(--accent-blue);
+    padding-left: 15px;
+}
+
+/* Level Cards */
 .level-card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
@@ -80,30 +103,87 @@ nav button.active {
     height: 168px;
     background-size: cover;
     background-position: center;
+    background-color: #000;
 }
 
 .level-info {
     padding: 20px 25px;
+    flex-grow: 1;
 }
 
+.level-info h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.3rem;
+}
+
+/* Tags */
 .tag {
     font-size: 0.7rem;
+    background-color: var(--tag-red);
+    color: #000;
     padding: 2px 8px;
     border-radius: 4px;
     margin-left: 10px;
-    background-color: var(--tag-red);
-    color: #000;
+    text-transform: uppercase;
+    font-weight: 700;
+    vertical-align: middle;
 }
 
+/* Records Section */
+.records-list {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #333;
+    font-size: 0.85rem;
+}
+
+.records-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 5px 0 15px 0;
+}
+
+.records-list li {
+    margin-bottom: 5px;
+    color: var(--text-dim);
+}
+
+.records-list a {
+    color: var(--accent-blue);
+    text-decoration: none;
+}
+
+.records-list a:hover {
+    text-decoration: underline;
+}
+
+/* Record Status Labels */
+.rec-status {
+    font-weight: 700;
+    margin-right: 5px;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+.rec-status.verifier { color: var(--gold); }
+.rec-status.victor { color: #fff; }
+.rec-status.progress { color: #666; }
+
 .video-link {
+    display: inline-block;
     color: var(--accent-blue);
     text-decoration: none;
     font-weight: 700;
     text-transform: uppercase;
+    font-size: 0.8rem;
+    margin-top: 5px;
 }
 
+/* Mobile Responsiveness */
 @media (max-width: 850px) {
     body { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; position: relative; }
-    .main-content { margin-left: 0; }
+    .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border-color); }
+    .main-content { margin-left: 0; padding: 20px; }
+    .level-card { flex-direction: column; }
+    .thumbnail { width: 100%; height: 200px; }
 }
