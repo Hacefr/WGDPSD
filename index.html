@@ -1,1 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDPS Demonlist</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://googleapis.com" rel="stylesheet">
+</head>
+<body>
+    <div class="navbar">
+        <h1>GDPS DEMONLIST</h1>
+        <div class="nav-links">
+            <button onclick="filterList('main')">Main List (Top 10)</button>
+            <button onclick="filterList('extended')">Extended List</button>
+        </div>
+    </div>
 
+    <div class="container">
+        <div id="list-container">
+            <!-- Level cards will appear here via JavaScript -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
