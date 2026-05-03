@@ -8,9 +8,10 @@
     <link href="https://googleapis.com" rel="stylesheet">
 </head>
 <body>
+
     <div class="sidebar">
-        <h1 class="logo">GDPS LIST</h1>
-        <nav>
+        <div class="logo">GDPS LIST</div>
+        <nav id="nav-bar">
             <button onclick="showSection('main')" id="btn-main">Main List</button>
             <button onclick="showSection('extended')" id="btn-extended">Extended List</button>
             <button onclick="showSection('players')" id="btn-players">Top Players</button>
@@ -20,7 +21,7 @@
 
     <div class="main-content">
         <div id="content-area">
-            <!-- Dynamic content loads here -->
+            <!-- JavaScript will inject content here -->
         </div>
     </div>
 
