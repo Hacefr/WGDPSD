@@ -1,16 +1,35 @@
 [
   {
     "position": 1,
-    "name": "OWO",
-    "creator": "Fallow",
-    "id": "178",
-    "video": "..."
-  }, 
+    "name": "Tidal Wave",
+    "tag": "Unverified",
+    "creator": "OniLink",
+    "id": "12345678",
+    "video": "https://youtube.com",
+    "records": [
+      { "user": "OniLink", "link": "https://youtube.com", "percent": 100, "status": "Verifier" },
+      { "user": "PlayerOne", "link": "https://youtube.com", "percent": 100, "status": "Victor" }
+    ]
+  },
   {
     "position": 2,
-    "name": "Effortland",
-    "creator": "WORA",
-    "id": "102",
-    "video": "..."
+    "name": "Acheron",
+    "tag": "",
+    "creator": "Riot",
+    "id": "88888888",
+    "video": "https://youtube.com",
+    "records": [
+      { "user": "Doggie", "link": "https://youtube.com", "percent": 100, "status": "Victor" },
+      { "user": "PlayerTwo", "link": "https://youtube.com", "percent": 72, "status": "Progress" }
+    ]
+  },
+  {
+    "position": 11,
+    "name": "Cataclysm",
+    "tag": "Classic",
+    "creator": "GGBoy",
+    "id": "10101010",
+    "video": "https://youtube.com",
+    "records": []
   }
 ]
