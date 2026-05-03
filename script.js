@@ -1,5 +1,6 @@
 let allLevels = []; 
 
+// 1. LOAD DATA
 async function loadData() {
     try {
         const response = await fetch('data.json');
@@ -12,12 +13,21 @@ async function loadData() {
     }
 }
 
+// 2. HELPER FUNCTIONS
 function getYouTubeID(url) {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
     return (match && match.length === 11) ? match : null;
 }
 
+function calculatePoints(pos, percent) {
+    // Formula: #1 gives 250pts. Rank decreases by 2.5 per spot.
+    let basePoints = Math.max(0, 250 - (pos - 1) * 2.5);
+    // Multiply by the percentage (e.g., 100% = 1.0, 50% = 0.5)
+    return basePoints * (percent / 100);
+}
+
+// 3. MAIN DISPLAY LOGIC
 function showSection(section) {
     const content = document.getElementById('content-area');
     content.innerHTML = "";
@@ -34,7 +44,6 @@ function showSection(section) {
             const ytID = getYouTubeID(level.video);
             const thumb = ytID ? `https://youtube.com{ytID}/mqdefault.jpg` : "";
             
-            // Build the Records List HTML
             let recordsHTML = "";
             if (level.records && level.records.length > 0) {
                 recordsHTML = `<div class="records-list"><strong>Records:</strong><ul>`;
@@ -61,11 +70,55 @@ function showSection(section) {
                     </div>
                 </div>`;
         });
+
     } else if (section === 'players') {
-        content.innerHTML = "<h1>TOP PLAYERS</h1><p>Rankings calculated from records.</p>";
+        content.innerHTML = "<h1>TOP PLAYERS</h1>";
+        let scores = {};
+
+        // Calculate scores for every player found in records
+        allLevels.forEach(level => {
+            if (level.records) {
+                level.records.forEach(rec => {
+                    const points = calculatePoints(level.position, rec.percent);
+                    if (scores[rec.user]) {
+                        scores[rec.user] += points;
+                    } else {
+                        scores[rec.user] = points;
+                    }
+                });
+            }
+        });
+
+        // Sort players by score (highest first)
+        const sortedPlayers = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+
+        if (sortedPlayers.length === 0) {
+            content.innerHTML += "<p>No records found to calculate rankings.</p>";
+        }
+
+        sortedPlayers.forEach((player, index) => {
+            const [name, score] = player;
+            content.innerHTML += `
+                <div class="level-card">
+                    <div class="level-info">
+                        <h2>#${index + 1} - ${name}</h2>
+                        <p>Total Points: <strong style="color:#4db8ff">${score.toFixed(2)}</strong></p>
+                    </div>
+                </div>`;
+        });
+
     } else if (section === 'team') {
-        content.innerHTML = "<h1>LIST TEAM</h1><p>Admin: YourName</p>";
+        content.innerHTML = `
+            <h1>LIST TEAM</h1>
+            <div class="level-card">
+                <div class="level-info">
+                    <h2>Owner</h2>
+                    <p>YourName</p>
+                </div>
+            </div>
+        `;
     }
 }
 
+// Start the application
 loadData();
