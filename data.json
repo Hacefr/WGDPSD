@@ -6,12 +6,12 @@
     "creator": "Player1",
     "id": "101",
     "video": "..."
-  }, <--- Comma here
+  }, 
   {
     "position": 11,
     "name": "Extended Level",
     "creator": "Player2",
     "id": "102",
     "video": "..."
-  } <--- No comma here because it's the last one
+  }
 ]
