@@ -1,73 +1,106 @@
+:root {
+    --bg-dark: #111;
+    --card-bg: #1a1a1a;
+    --border-color: #333;
+    --accent-blue: #4db8ff;
+    --text-main: #fff;
+    --text-dim: #bbb;
+}
+
 body {
-    background-color: #111;
-    color: white;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
     font-family: 'Montserrat', sans-serif;
     margin: 0;
-}
-
-.navbar {
-    background-color: #1a1a1a;
-    padding: 20px;
-    text-align: center;
-    border-bottom: 2px solid #333;
-}
-
-.nav-links button {
-    background: #333;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    margin: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 4px;
-    transition: 0.2s;
-}
-
-.nav-links button:hover {
-    background: #4db8ff;
-}
-
-.container {
-    max-width: 900px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
-
-.level-card {
-    background: #1a1a1a;
-    margin-bottom: 15px;
     display: flex;
-    border: 1px solid #333;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background: var(--card-bg);
+    border-right: 1px solid var(--border-color);
+    position: fixed;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--accent-blue);
+    margin-bottom: 30px;
+}
+
+nav button {
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    text-align: left;
+    padding: 12px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 4px;
+}
+
+nav button:hover, nav button.active {
+    background: #252525;
+    color: var(--accent-blue);
+}
+
+/* Main Content Area */
+.main-content {
+    margin-left: 250px;
+    padding: 40px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+/* Level & Player Cards */
+.level-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+    display: flex;
+    overflow: hidden;
     border-radius: 4px;
 }
 
 .thumbnail {
-    width: 300px;
-    height: 168px;
+    width: 320px;
+    height: 180px;
     background-size: cover;
     background-position: center;
-    border-right: 1px solid #333;
 }
 
 .level-info {
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex: 1;
 }
 
 .level-info h2 {
-    margin: 0 0 8px 0;
-    font-size: 1.4em;
+    margin: 0 0 10px 0;
+    font-size: 1.3rem;
 }
 
 .level-info p {
-    margin: 4px 0;
-    color: #bbb;
+    color: var(--text-dim);
+    margin: 5px 0;
 }
 
-@media (max-width: 700px) {
+.accent {
+    color: var(--accent-blue);
+    font-weight: 700;
+}
+
+@media (max-width: 800px) {
+    body { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: relative; }
+    .main-content { margin-left: 0; padding: 20px; }
     .level-card { flex-direction: column; }
-    .thumbnail { width: 100%; border-right: none; border-bottom: 1px solid #333; }
+    .thumbnail { width: 100%; }
 }
