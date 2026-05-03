@@ -1,8 +1,29 @@
 // --- DATA SECTION ---
 const allLevels = [
-    { pos: 1, name: "Tidal Wave", creator: "OniLink", video: "https://youtube.com", records: ["PlayerOne"] },
-    { pos: 2, name: "Acheron", creator: "Riot", video: "https://youtube.com", records: ["PlayerTwo"] },
-    { pos: 11, name: "Cataclysm", creator: "GGBoy", video: "https://youtube.com", records: ["PlayerOne"] }
+    { 
+        pos: 1, 
+        name: "Tidal Wave", 
+        tag: "Unverified", // Add your tag here
+        creator: "OniLink", 
+        video: "https://youtube.com", 
+        records: ["PlayerOne"] 
+    },
+    { 
+        pos: 2, 
+        name: "Acheron", 
+        tag: "", // No tag for this level
+        creator: "Riot", 
+        video: "https://youtube.com", 
+        records: ["PlayerTwo"] 
+    },
+    { 
+        pos: 11, 
+        name: "Cataclysm", 
+        tag: "Legacy", 
+        creator: "GGBoy", 
+        video: "https://youtube.com", 
+        records: ["PlayerOne"] 
+    }
 ];
 
 const listTeam = [
@@ -14,7 +35,7 @@ const listTeam = [
 function getYouTubeID(url) {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
-    return (match && match.length === 11) ? match[2] : null;
+    return (match && match[0].length >= 11) ? match[2] : null;
 }
 
 function calculatePoints(pos) {
@@ -35,11 +56,15 @@ function showSection(section) {
         filtered.forEach(level => {
             const ytID = getYouTubeID(level.video);
             const thumb = ytID ? `https://youtube.com{ytID}/mqdefault.jpg` : "";
+            
+            // Logic to check if a tag exists
+            const tagHTML = level.tag ? `<span class="level-tag">${level.tag}</span>` : "";
+
             content.innerHTML += `
                 <div class="level-card">
                     <div class="thumbnail" style="background-image: url('${thumb}')"></div>
                     <div class="level-info">
-                        <h2>#${level.pos} - ${level.name}</h2>
+                        <h2>#${level.pos} - ${level.name} ${tagHTML}</h2>
                         <p>By <span class="accent">${level.creator}</span></p>
                         <p>Records: ${level.records.join(', ') || "None"}</p>
                         <a href="${level.video}" target="_blank" class="video-link">Watch Video</a>
