@@ -1,10 +1,11 @@
 :root {
-    --bg-dark: #111;
-    --card-bg: #1a1a1a;
-    --border-color: #333;
+    --bg-dark: #0a0a0a;
+    --card-bg: #151515;
+    --sidebar-bg: #111111;
+    --border-color: #222;
     --accent-blue: #4db8ff;
-    --text-main: #fff;
-    --text-dim: #bbb;
+    --text-main: #ffffff;
+    --text-dim: #999;
 }
 
 body {
@@ -13,83 +14,99 @@ body {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     display: flex;
+    min-height: 100vh;
 }
 
-/* Sidebar Navigation */
 .sidebar {
-    width: 250px;
-    height: 100vh;
-    background: var(--card-bg);
+    width: 260px;
+    background: var(--sidebar-bg);
     border-right: 1px solid var(--border-color);
     position: fixed;
-    padding: 20px;
+    height: 100vh;
+    padding: 30px 20px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    text-align: center;
+    letter-spacing: 2px;
     color: var(--accent-blue);
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
 }
 
 nav button {
-    width: 100%;
     background: none;
     border: none;
     color: var(--text-dim);
     text-align: left;
     padding: 12px 15px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     cursor: pointer;
-    transition: 0.2s;
-    border-radius: 4px;
+    transition: all 0.2s;
+    border-radius: 5px;
+    margin-bottom: 5px;
 }
 
-nav button:hover, nav button.active {
-    background: #252525;
-    color: var(--accent-blue);
+nav button:hover {
+    color: var(--text-main);
+    background: #1a1a1a;
 }
 
-/* Main Content Area */
+nav button.active {
+    background: var(--accent-blue);
+    color: #000;
+    font-weight: 700;
+}
+
 .main-content {
-    margin-left: 250px;
-    padding: 40px;
+    margin-left: 260px;
+    padding: 50px;
     width: 100%;
-    max-width: 1000px;
+    max-width: 900px;
 }
 
-/* Level & Player Cards */
+h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    border-left: 5px solid var(--accent-blue);
+    padding-left: 15px;
+}
+
 .level-card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     display: flex;
+    border-radius: 6px;
     overflow: hidden;
-    border-radius: 4px;
 }
 
 .thumbnail {
-    width: 320px;
-    height: 180px;
+    width: 300px;
+    min-width: 300px;
+    height: 168px;
     background-size: cover;
     background-position: center;
+    background-color: #000;
 }
 
 .level-info {
-    padding: 20px;
-    flex: 1;
+    padding: 20px 25px;
 }
 
 .level-info h2 {
     margin: 0 0 10px 0;
-    font-size: 1.3rem;
-}
-
-.level-info p {
-    color: var(--text-dim);
-    margin: 5px 0;
 }
 
 .accent {
@@ -97,9 +114,18 @@ nav button:hover, nav button.active {
     font-weight: 700;
 }
 
-@media (max-width: 800px) {
+.video-link {
+    margin-top: 10px;
+    display: block;
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+@media (max-width: 850px) {
     body { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; position: relative; }
+    .sidebar { width: 100%; height: auto; position: relative; border-right: none; }
     .main-content { margin-left: 0; padding: 20px; }
     .level-card { flex-direction: column; }
     .thumbnail { width: 100%; }
