@@ -1,1 +1,10 @@
-
+[
+  {
+    "position": 1,
+    "name": "Level Name",
+    "creator": "PlayerName",
+    "id": "12345678",
+    "verifier": "VerifierName",
+    "video": "https://youtube.com/..."
+  }
+]
