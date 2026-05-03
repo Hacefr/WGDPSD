@@ -1,9 +1,9 @@
-// --- DATA SECTION ---
+// --- DATA: Update your levels here ---
 const allLevels = [
     { 
         pos: 1, 
         name: "Tidal Wave", 
-        tag: "Unverified", // Add your tag here
+        tag: "Unverified", 
         creator: "OniLink", 
         video: "https://youtube.com", 
         records: ["PlayerOne"] 
@@ -11,7 +11,7 @@ const allLevels = [
     { 
         pos: 2, 
         name: "Acheron", 
-        tag: "", // No tag for this level
+        tag: "", 
         creator: "Riot", 
         video: "https://youtube.com", 
         records: ["PlayerTwo"] 
@@ -22,23 +22,25 @@ const allLevels = [
         tag: "Legacy", 
         creator: "GGBoy", 
         video: "https://youtube.com", 
-        records: ["PlayerOne"] 
+        records: ["PlayerOne", "PlayerThree"] 
     }
 ];
 
 const listTeam = [
     { role: "Owners", names: ["YourName"] },
-    { role: "Editors", names: ["Editor1"] }
+    { role: "Editors", names: ["Editor1", "Editor2"] }
 ];
 
-// --- LOGIC SECTION ---
+// --- LOGIC ---
+
 function getYouTubeID(url) {
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     const match = url.match(regExp);
-    return (match && match[0].length >= 11) ? match[2] : null;
+    return (match && match[2].length === 11) ? match[2] : null;
 }
 
 function calculatePoints(pos) {
+    // Formula: #1 = 250pts, decreasing by 2.5 per rank
     return Math.max(0, 250 - (pos - 1) * 2.5);
 }
 
@@ -46,6 +48,7 @@ function showSection(section) {
     const content = document.getElementById('content-area');
     content.innerHTML = "";
     
+    // UI: Set active button
     document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
     document.getElementById(`btn-${section}`).classList.add('active');
 
@@ -57,8 +60,12 @@ function showSection(section) {
             const ytID = getYouTubeID(level.video);
             const thumb = ytID ? `https://youtube.com{ytID}/mqdefault.jpg` : "";
             
-            // Logic to check if a tag exists
-            const tagHTML = level.tag ? `<span class="level-tag">${level.tag}</span>` : "";
+            // Generate Tag HTML
+            let tagHTML = "";
+            if (level.tag) {
+                const tagClass = level.tag.toLowerCase() === "unverified" ? "tag-unverified" : "tag-legacy";
+                tagHTML = `<span class="tag ${tagClass}">${level.tag}</span>`;
+            }
 
             content.innerHTML += `
                 <div class="level-card">
@@ -67,28 +74,39 @@ function showSection(section) {
                         <h2>#${level.pos} - ${level.name} ${tagHTML}</h2>
                         <p>By <span class="accent">${level.creator}</span></p>
                         <p>Records: ${level.records.join(', ') || "None"}</p>
-                        <a href="${level.video}" target="_blank" class="video-link">Watch Video</a>
+                        <a href="${level.video}" target="_blank" class="video-link">Watch Verification</a>
                     </div>
                 </div>`;
         });
     } else if (section === 'players') {
         content.innerHTML = "<h1>TOP PLAYERS</h1>";
         let scores = {};
-        allLevels.forEach(l => l.records.forEach(p => scores[p] = (scores[p] || 0) + calculatePoints(l.pos)));
         
-        Object.entries(scores).sort((a, b) => b[1] - a[1]).forEach((p, i) => {
+        allLevels.forEach(l => {
+            const pts = calculatePoints(l.pos);
+            l.records.forEach(p => scores[p] = (scores[p] || 0) + pts);
+        });
+        
+        const sorted = Object.entries(scores).sort((a, b) => b - a);
+        
+        sorted.forEach((p, i) => {
             content.innerHTML += `
                 <div class="level-card"><div class="level-info">
                     <h2>#${i+1} - ${p[0]}</h2>
-                    <p>Points: <span class="accent">${p[1].toFixed(2)}</span></p>
+                    <p>Total Points: <span class="accent">${p[1].toFixed(2)}</span></p>
                 </div></div>`;
         });
     } else if (section === 'team') {
         content.innerHTML = "<h1>LIST TEAM</h1>";
         listTeam.forEach(t => {
-            content.innerHTML += `<div class="level-card"><div class="level-info"><h2>${t.role}</h2><p>${t.names.join(', ')}</p></div></div>`;
+            content.innerHTML += `
+                <div class="level-card"><div class="level-info">
+                    <h2>${t.role}</h2>
+                    <p>${t.names.join(', ')}</p>
+                </div></div>`;
         });
     }
 }
 
+// Default view
 showSection('main');
